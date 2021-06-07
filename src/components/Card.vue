@@ -48,22 +48,28 @@
 <script>
 
 import { PencilIcon, SaveIcon } from '@heroicons/vue/outline'
+
+
 export default {
   name: 'Card',
-  components: { PencilIcon, SaveIcon },
+  components: { 
+    PencilIcon, 
+    SaveIcon 
+  },
   props: {
       users: {
           type: Array
       },
-      filterByTerm:Array
+      filterByTerm:Array,
   },
   data(){
       return {
-          tagEditingId: ''
+          tagEditingId: '',
       }
   },
 
   methods: {
+    
     onDelete(id){
         //de esta forma invocamos el method onDelete() contenido en el componente App.vue y le pasamos el id capturado en el card
         this.$emit("onDelete", id)

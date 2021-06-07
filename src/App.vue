@@ -30,8 +30,18 @@
           />
         </div>
 
-          <Card :users="users" @onEdit="onEdit" @onDelete="onDelete" :filterByTerm="filterByTerm"/>
-
+          <Card 
+            :users="users" 
+            @onEdit="onEdit" 
+            @onDelete="onDelete" 
+            :filterByTerm="filterByTerm" 
+          />
+        <VueTailwindPagination
+          :current="currentPage"
+          :total="total"
+          :per-page="perPage"
+          @page-changed="pageChange($event)"
+        />
       </div>
     </div>
     <!-- MODAL -->
@@ -71,6 +81,8 @@ import Card from './components/Card.vue'
 import Navbar from './components/Navbar.vue'
 import Button from './components/Button.vue'
 import FormUser from './components/FormUser.vue'
+import VueTailwindPagination from "@ocrv/vue-tailwind-pagination"
+import "@ocrv/vue-tailwind-pagination/dist/style.css"
 
 export default {
   name: 'App',
@@ -78,7 +90,8 @@ export default {
     Card,
     Navbar,
     Button,
-    FormUser
+    FormUser,
+    VueTailwindPagination
   },
 
   data(){
@@ -92,16 +105,33 @@ export default {
         email: '',
       },
       showModal: false,
-      searchTerm:''
+      searchTerm:'',
+      
+      currentPage: 1,
+      total: 100,
+      perPage: 5
     }
   },
 
   methods: {
+    
+    /* PAGINADOR */
+    pageChange(pageNumber){
+        this.currentPage = pageNumber
+        this.getUsers()
+    },
+    /* PAGINADOR */
 
+
+    
     /* METODOS CRUD */
     getUsers(){
-      axios.get(this.url).then(data=>{
-        this.users = data.data
+      axios.get(`${this.url}?page=${this.currentPage}`).then(data=>{
+        this.users = data.data.data
+
+        //actualizamos los props para paginar segun la data que retorna la api
+        this.perPage = data.data.per_page
+        this.total = data.data.total
         
       })
     },
@@ -170,9 +200,9 @@ export default {
     en este caso una vez el componente se crea llamamos la funcion que obtiene a los usuarios
   */
   created(){
+    this.currentPage = 1
     this.getUsers()
   },
-
   computed:{
     filterByTerm:function(){
         return this.users.filter((user) =>{
