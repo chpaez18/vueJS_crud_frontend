@@ -71,7 +71,7 @@ import Card from './components/Card.vue'
 import Navbar from './components/Navbar.vue'
 import Button from './components/Button.vue'
 import FormUser from './components/FormUser.vue'
-
+import { useToast } from "vue-toastification";
 
 export default {
   name: 'App',
@@ -81,6 +81,24 @@ export default {
     Button,
     FormUser
   },
+
+    setup() {
+      // Get toast interface
+      const toast = useToast();
+
+      // Use it!
+      toast("I'm a toast!");
+
+      // or with options
+      toast.success("My toast content", {
+        timeout: 2000
+      });
+      // These options will override the options defined in the "app.use" plugin registration for this specific toast
+
+      // Make it available inside methods
+      return { toast }
+    },
+    
   data(){
     return {
       url: 'http://localhost/prueba_tecnica/public/api/users',
@@ -145,11 +163,14 @@ export default {
     //Los componentes hijos se comunican con estos metodos por medio de un $.emit asi recibimos la data desde estos componentes hijos
     onEdit(data){
       this.updateUser(data)
+      this.$toast.show("Registro Actualizado", {type: "success"});
     },
 
     onDelete(id){
       //ejecutamos la funcion local deleteUser()
       this.deleteUser(id)
+      this.$toast.show("Registro Eliminado", {type: "error"});
+
     },
 
     onFormSubmit(data){
@@ -157,6 +178,7 @@ export default {
       //llamamos la funcion que se encarga de crear el user
       this.createUser(data)
       this.showModal = false
+      this.$toast.show("Registro Completado", {type: "success"});
 
     }
     /* METODOS DE ESCUCHA */
@@ -167,17 +189,13 @@ export default {
   */
   created(){
     this.getUsers()
-    //this.$toasted.show("User successfully added..!");
+    
   },
 
   computed:{
     filterByTerm:function(){
-        /* return this.users.filter((user)=>{
-          return user.first_name.match(this.search) || user.last_name.match(this.search)
-        }) */
-
         return this.users.filter((user) =>{
-          return user.first_name.toLowerCase().includes(this.searchTerm)  || user.last_name.toLowerCase().includes(this.searchTerm)
+          return user.first_name.toLowerCase().includes(this.searchTerm.toLowerCase())  || user.last_name.toLowerCase().includes(this.searchTerm.toLowerCase())
         })
     }
   }
