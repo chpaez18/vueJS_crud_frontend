@@ -117,6 +117,7 @@ export default {
 
   methods: {
     
+    
     /* PAGINADOR */
     pageChange(pageNumber){
         this.currentPage = pageNumber
@@ -126,7 +127,7 @@ export default {
 
 
     login(){
-      axios.post('http://localhost/prueba_tecnica_actual/public/api/login',{
+      axios.post('http://localhost/prueba_tecnica/public/api/login',{
         username: 'coderchris@prueba.com',
         password: '123456789',
       }).then(data=>{
