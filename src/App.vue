@@ -96,7 +96,7 @@ export default {
 
   data(){
     return {
-      url: 'http://localhost/prueba_tecnica/public/api/users',
+      url: 'http://localhost/prueba_tecnica_actual/public/api/users',
       users: [],
       form: {
         first_name: '',
@@ -109,7 +109,9 @@ export default {
       
       currentPage: 1,
       total: 100,
-      perPage: 5
+      perPage: 5,
+
+      token: ''
     }
   },
 
@@ -123,18 +125,29 @@ export default {
     /* PAGINADOR */
 
 
-    
+    login(){
+      axios.post('http://localhost/prueba_tecnica_actual/public/api/login',{
+        username: 'coderchris@prueba.com',
+        password: '123456789',
+      }).then(data=>{
+        
+        this.token = data.data.access_token
+        this.getUsers()
+      })
+    },
     /* METODOS CRUD */
     getUsers(){
-      axios.get(`${this.url}?page=${this.currentPage}`).then(data=>{
+      this.login()
+      console.log('token: '+this.token)
+      axios.get(`${this.url}?page=${this.currentPage}`, { headers: { 'Authorization': 'Bearer ' + this.token } }).then(data=>{
         this.users = data.data.data
 
         //actualizamos los props para paginar segun la data que retorna la api
         this.perPage = data.data.per_page
         this.total = data.data.total
         
-      })
-    },
+      }
+    )},
 
     updateUser(data){
       //invocamos el endpoint para actualizar un usuario, la promise que retorna ejecutamos la funcion de getUsers() para cargar de nuevo los usuarios
