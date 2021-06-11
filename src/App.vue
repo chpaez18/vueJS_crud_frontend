@@ -96,7 +96,7 @@ export default {
 
   data(){
     return {
-      url: 'http://localhost/prueba_tecnica_actual/public/api/users',
+      url: 'http://localhost/prueba_tecnica/public/api/users',
       users: [],
       form: {
         first_name: '',
@@ -138,9 +138,9 @@ export default {
     },
     /* METODOS CRUD */
     getUsers(){
-      this.login()
+      //this.login()
       console.log('token: '+this.token)
-      axios.get(`${this.url}?page=${this.currentPage}`, { headers: { 'Authorization': 'Bearer ' + this.token } }).then(data=>{
+      axios.get(`${this.url}?page=${this.currentPage}`, { headers: { 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiMTA5Y2MzMmYyZjk1ZWRiMTBkMjg0OTM5Zjg4OWVlNzA4YmE3ODZkNjFjOTM3NWNmN2ZmZDlmZTY4NjIxMTg3M2MwMmQxYmZmMmQxMzdhZmIiLCJpYXQiOjE2MjM0MzI1OTkuODg3ODkzLCJuYmYiOjE2MjM0MzI1OTkuODg3OTE5LCJleHAiOjE2NTQ5Njg1OTkuODQwNDgsInN1YiI6IjI5Iiwic2NvcGVzIjpbXX0.JnA-regWYk7uhTsQ788XplqlsHgcn2h3PiLAKXhy6KPIn4b-MSCh_hB-X1RQUcRffn53jR-6XvtNemoy1ff4vW3nSitDURS_PCBvtqCvRR5ozhKI_FwGsSnDXhor9e31riNxot-tQXJGpMEd84nnisAikRmoteNmGIY16cbA97_iyY3ix8UfRDXpjmlVAWRU1LylWL5bEM5ciopo3fxGEkuA70oAyY2nqj3Z35nzgNRsPUj3QXEsZRp5obEfCD252vtLbPh7AtscqY3wPehCdJ8UGlTfbNc5WdM5utLVI12HPgaav2QL_9XG8nFKR4HL1HMK8Lqs5BB8vNHLnsWSPjqwyChJRK2-Bm8usIYAxM2q8lcGqtW79Ipb3JEpyEiy_l8kucCOf8SFFAOrJ1RoVN4gf-Bxd1_v4FtMy7rLc0Mspa6NZKKY1ZRWHlvNJxg_zW5ZLJS7dRht6BX0yfvH4lixb_OxS_u2-a0WbskIWTCL0EqpWHYcbEhYlVtUKtwmmuTyR6dlnKLSWhNwhhQCSaOH6WJ3S-3k6k3vPP2reZgXFSZwXCUSBTOoLGyUJZUYFX6doPtqKVlyjBcceiBXuxMFO3EKpD9zvXXr_Jc5io_9weVnTkJ2vE-Ir4gO9GbV4_AIaQ2nd1p6Xr9h8rk37UnpbzgDKW-QqdXw1beFNCg' } }).then(data=>{
         this.users = data.data.data
 
         //actualizamos los props para paginar segun la data que retorna la api
